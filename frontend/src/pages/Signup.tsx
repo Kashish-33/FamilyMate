@@ -82,7 +82,7 @@ function Signup() {
           </h1>
 
           <p className="text-sm text-slate-500 mt-2">
-            Join Family Copilot to manage your family records.
+            Join FamilyMate to manage your family records.
           </p>
         </div>
 

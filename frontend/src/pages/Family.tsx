@@ -176,7 +176,7 @@ function Family() {
           </h1>
 
           <p className="mt-2 text-slate-500">
-            People connected to your Family Copilot account.
+            People connected to your FamilyMate account.
           </p>
         </div>
 

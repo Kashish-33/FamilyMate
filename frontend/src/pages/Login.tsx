@@ -65,7 +65,7 @@ function Login() {
           </h1>
 
           <p className="text-sm text-slate-500 mt-2">
-            Sign in to your Family Copilot account
+            Sign in to your FamilyMate account
           </p>
         </div>
 

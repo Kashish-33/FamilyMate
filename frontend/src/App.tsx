@@ -25,12 +25,12 @@ function Dashboard() {
       </p>
 
       <h2 className="text-3xl font-bold text-slate-800 mt-1">
-        Good morning, Kashi
+        Good morning !
       </h2>
 
       <div className="mt-8 bg-white rounded-3xl border border-[#F0E1E5] p-8">
         <h3 className="text-2xl font-semibold text-slate-800">
-          Welcome to Family Copilot
+          Welcome to FamilyMate
         </h3>
 
         <p className="text-slate-500 mt-3">
@@ -119,7 +119,7 @@ function AppShell() {
 
           <div>
             <h1 className="font-bold text-slate-800">
-              Family Copilot
+              FamilyMate
             </h1>
 
             <p className="text-xs text-slate-400">

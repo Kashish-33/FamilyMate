@@ -62,10 +62,10 @@ export const sendChatMessage = async (message: string): Promise<ChatResponse> =>
   const data = await parseResponse(response);
 
   if (!response.ok) {
-    throw new Error(getErrorMessage(data, "Could not get a response from Family Copilot."));
+    throw new Error(getErrorMessage(data, "Could not get a response from FamilyMate."));
   }
   if (!isRecord(data) || typeof data.response !== "string") {
-    throw new Error("Received an invalid response from Family Copilot.");
+    throw new Error("Received an invalid response from FamilyMate.");
   }
 
   return { response: data.response };
