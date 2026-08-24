@@ -4,11 +4,12 @@ from app.utils.security import hash_password, verify_password
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 
 from app.schemas.user import UserCreate
 from app.schemas.user import UserLogin
-from app.database import SessionLocal
+from app.core.database import SessionLocal
 
 
 from app.utils.jwt_handler import create_access_token
@@ -53,8 +54,30 @@ def signup(
         )
 
         db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
+        try:
+            db.commit()
+            db.refresh(new_user)
+        except IntegrityError as exc:
+            db.rollback()
+            error_text = str(exc.orig).lower() if exc.orig else str(exc).lower()
+
+            if "users_email_key" in error_text or "email" in error_text:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Email already registered"
+                )
+
+            raise HTTPException(
+                status_code=500,
+                detail="Could not create user due to a database integrity error."
+            )
+        except SQLAlchemyError:
+            db.rollback()
+            raise HTTPException(
+                status_code=500,
+                detail="Could not create user."
+            )
+
         return {
             "message": "User created successfully",
             "user_id": new_user.id
@@ -90,7 +113,7 @@ def login(
         "token_type": "bearer"
     }
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),

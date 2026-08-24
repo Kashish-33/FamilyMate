@@ -3,7 +3,9 @@ from datetime import datetime
 from sqlalchemy import Column, String, Integer, ForeignKey, Date, DateTime
 from sqlalchemy.orm import relationship
 
-from app.database import Base
+from app.core.database import Base
+
+from sqlalchemy.dialects.postgresql import JSONB
 
 
 class Document(Base):
@@ -17,6 +19,7 @@ class Document(Base):
     issue_date = Column(Date, nullable=True)
     expiry_date = Column(Date, nullable=True)
     reminder_days_before = Column(Integer, nullable=False)
+    extracted_data = Column(JSONB, nullable=True)
     uploaded_at = Column(DateTime, default=datetime.utcnow)
 
     member = relationship("FamilyMember", back_populates="documents")

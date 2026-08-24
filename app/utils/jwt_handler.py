@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from fastapi import HTTPException
 
-SECRET_KEY = "your_super_secret_key"
+from app.core.config import SECRET_KEY
 
 ALGORITHM = "HS256"
 

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-from app.database import Base
+from app.core.database import Base
 
 class FamilyMember(Base):
     __tablename__ = "family_members"
@@ -17,3 +17,4 @@ class FamilyMember(Base):
 
     family = relationship("Family", back_populates="members")
     documents = relationship("Document", back_populates="member")
+    medicines = relationship("Medicine", back_populates="member")
