@@ -101,7 +101,7 @@ function UploadDocumentModal({
       formData.append("file", file);
 
       const response = await fetch(
-        "http://127.0.0.1:8000/documents/",
+        `${import.meta.env.VITE_API_URL}/documents/`,
         {
           method: "POST",
           headers: {

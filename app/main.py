@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import os
 
 from app.routers.user import router as user_router
 from app.routers.family import router as family_router
@@ -25,12 +26,18 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+FRONTEND_URL = os.getenv("FRONTEND_URL")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-    "http://localhost:5173",
-    "http://localhost:5174",
-],
+        "http://localhost:5173",
+        "http://localhost:5174",
+        FRONTEND_URL,
+    ] if FRONTEND_URL else [
+        "http://localhost:5173",
+        "http://localhost:5174",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

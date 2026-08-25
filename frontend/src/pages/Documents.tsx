@@ -69,7 +69,7 @@ function Documents() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/family-members/",
+        `${import.meta.env.VITE_API_URL}/family-members/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -130,7 +130,7 @@ function Documents() {
       }
 
       const response = await fetch(
-        `http://127.0.0.1:8000/documents/member/${memberId}`,
+        `${import.meta.env.VITE_API_URL}/documents/member/${memberId}`,
         {
           headers: {
             Authorization:
