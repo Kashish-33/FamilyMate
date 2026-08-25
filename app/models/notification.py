@@ -22,4 +22,6 @@ class Notification(Base):
 
     created_at = Column(DateTime, default=datetime.utcnow)
 
+    read_at = Column(DateTime, nullable=True)
+
     user = relationship("User", back_populates="notifications")

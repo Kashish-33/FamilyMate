@@ -5,6 +5,7 @@ from app.models.document import Document
 
 from app.services.medicine_reminder_service import get_expiring_medicines
 from app.services.document_reminder_service import get_expiring_documents
+from app.services.notification_service import delete_expired_read_notifications
 
 
 def check_all_reminders():
@@ -51,6 +52,8 @@ def check_all_reminders():
                 user_id,
                 db
             )
+
+        delete_expired_read_notifications(db)   
 
     finally:
         db.close()

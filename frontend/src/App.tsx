@@ -25,7 +25,7 @@ function Dashboard() {
       </p>
 
       <h2 className="text-3xl font-bold text-slate-800 mt-1">
-        Good morning !
+        Nice to see you again!
       </h2>
 
       <div className="mt-8 bg-white rounded-3xl border border-[#F0E1E5] p-8">
@@ -34,7 +34,7 @@ function Dashboard() {
         </h3>
 
         <p className="text-slate-500 mt-3">
-          Your family information and AI assistant will appear here.
+          Keep track of your family, reminders, and important information in one place.
         </p>
       </div>
     </>

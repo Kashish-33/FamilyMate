@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from datetime import datetime, timedelta
 
 from app.models.notification import Notification
 
@@ -69,8 +70,11 @@ def mark_notification_as_read(
     notification: Notification
 ):
     notification.is_read = True
+    notification.read_at = datetime.utcnow()
+
     db.commit()
     db.refresh(notification)
+
     return notification
 
 
@@ -85,7 +89,23 @@ def mark_all_notifications_as_read(
 
     for notification in notifications:
         notification.is_read = True
+        notification.read_at = datetime.utcnow()
 
     db.commit()
 
     return len(notifications)
+
+def delete_expired_read_notifications(
+    db: Session
+):
+    cutoff_time = datetime.utcnow() - timedelta(hours=24)
+
+    deleted_count = db.query(Notification).filter(
+        Notification.is_read == True,
+        Notification.read_at != None,
+        Notification.read_at <= cutoff_time
+    ).delete(synchronize_session=False)
+
+    db.commit()
+
+    return deleted_count
