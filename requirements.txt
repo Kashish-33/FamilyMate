@@ -12,3 +12,4 @@ google-genai==2.17.0
 paddleocr==3.7.0
 python-multipart==0.0.32
 email-validator==2.3.0
+paddlepaddle
