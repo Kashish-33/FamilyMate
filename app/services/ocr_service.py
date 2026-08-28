@@ -4,13 +4,13 @@ os.environ["FLAGS_enable_pir_api"] = "0"
 
 from paddleocr import PaddleOCR
 
-ocr = PaddleOCR(
-    lang="en",
-    enable_mkldnn=False
-)
-
 
 def extract_text(file_path: str):
+    ocr = PaddleOCR(
+        lang="en",
+        enable_mkldnn=False
+    )
+
     result = ocr.predict(file_path)
 
     texts = []
