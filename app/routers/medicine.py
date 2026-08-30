@@ -1,28 +1,23 @@
-from fastapi import APIRouter
-
+import logging
+import os
+import shutil
+import uuid
 from datetime import datetime, date
 
-from fastapi import APIRouter, Depends, HTTPException, Form
+from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlalchemy.orm import Session
-from app.core.database import SessionLocal
 
+logger = logging.getLogger(__name__)
+
+from app.core.database import SessionLocal
 from app.models.medicine import Medicine
 from app.models.family import Family
 from app.models.family_member import FamilyMember
 from app.models.user import User
 from app.routers.user import get_current_user
-
 from app.services.medicine_expiry_service import get_medicine_status
 from app.services.medicine_reminder_service import get_expiring_medicines
-
-import os
-import shutil
-import uuid
-
-from fastapi import File, UploadFile
-
 from app.core.config import UPLOAD_DIR
-from app.services.ocr_service import extract_text
 from app.services.llm_service import extract_medicine_data
 
 router = APIRouter()
@@ -85,56 +80,79 @@ def create_medicine(
             detail="Only JPG, JPEG and PNG files are allowed."
         )
 
-    unique_filename = f"{filename}_{uuid.uuid4().hex}{extension}"
+    logger.info(f"[MED UPLOAD] Received request: member_id={member_id}, filename={file.filename}")
 
+    unique_filename = f"{filename}_{uuid.uuid4().hex}{extension}"
     file_path = os.path.join(upload_dir, unique_filename)
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    try:
+        file_bytes = file.file.read()
 
-    extracted_text = extract_text(file_path)
+        mime_types = {
+            ".jpg": "image/jpeg",
+            ".jpeg": "image/jpeg",
+            ".png": "image/png",
+        }
+        mime_type = file.content_type or mime_types.get(extension, "image/jpeg")
 
-    extracted_data = extract_medicine_data(extracted_text)
+        with open(file_path, "wb") as buffer:
+            buffer.write(file_bytes)
+        logger.info(f"[MED UPLOAD] File saved to disk: path={file_path}, size={len(file_bytes)} bytes")
 
-    expiry_date = None
+        logger.info(f"[MED UPLOAD] Calling Gemini extraction (mime_type={mime_type})...")
+        extracted_data = extract_medicine_data(file_bytes=file_bytes, mime_type=mime_type)
+        logger.info(f"[MED UPLOAD] Gemini extraction completed: name='{extracted_data.medicine_name}', fields_count={len(extracted_data.extracted_fields)}")
 
-    expiry_date_text = extracted_data.extracted_fields.get("expiry_date")
+        expiry_date = None
 
-    if expiry_date_text:
-        try:
-            expiry_date = datetime.strptime(
-                expiry_date_text,
-                "%m/%Y"
-            ).date().replace(day=1)
+        expiry_date_text = extracted_data.extracted_fields.get("expiry_date")
 
-        except ValueError:
+        if expiry_date_text:
             try:
                 expiry_date = datetime.strptime(
-                   expiry_date_text,
-                   "%d/%m/%Y"
-                ).date()
+                    expiry_date_text,
+                    "%m/%Y"
+                ).date().replace(day=1)
 
             except ValueError:
-                expiry_date = None
+                try:
+                    expiry_date = datetime.strptime(
+                       expiry_date_text,
+                       "%d/%m/%Y"
+                    ).date()
 
-    new_medicine = Medicine(
-        member_id=member.id,
-        medicine_name=extracted_data.medicine_name,
-        dosage=extracted_data.extracted_fields.get("dosage"),
-        frequency=extracted_data.extracted_fields.get("frequency"),
-        expiry_date=expiry_date,
-        extracted_data=extracted_data.extracted_fields
-    )
+                except ValueError:
+                    expiry_date = None
 
-    db.add(new_medicine)
-    db.commit()
-    db.refresh(new_medicine)
+        new_medicine = Medicine(
+            member_id=member.id,
+            medicine_name=extracted_data.medicine_name,
+            dosage=extracted_data.extracted_fields.get("dosage"),
+            frequency=extracted_data.extracted_fields.get("frequency"),
+            expiry_date=expiry_date,
+            extracted_data=extracted_data.extracted_fields
+        )
 
-    return {
-        "message": "Medicine uploaded successfully",
-        "medicine_id": new_medicine.id,
-        "extracted_data": extracted_data.model_dump()
-    }
+        logger.info("[MED UPLOAD] Committing medicine record to database...")
+        db.add(new_medicine)
+        db.commit()
+        db.refresh(new_medicine)
+        logger.info(f"[MED UPLOAD] Database commit successful: medicine_id={new_medicine.id}")
+
+        return {
+            "message": "Medicine uploaded successfully",
+            "medicine_id": new_medicine.id,
+            "extracted_data": extracted_data.model_dump()
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception(f"[MED UPLOAD] Unexpected error during medicine upload: {exc}")
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Medicine upload processing failed: {str(exc)}"
+        )
 
 
 @router.get("/member/{member_id}")

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FamilyMember } from "../../types/family";
+import { uploadDocument } from "../../services/documentApi";
 
 type UploadDocumentModalProps = {
   members: FamilyMember[];
@@ -100,27 +101,7 @@ function UploadDocumentModal({
 
       formData.append("file", file);
 
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/documents/`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          getUploadError(
-            data,
-            "Upload failed."
-          )
-        );
-      }
+      await uploadDocument(formData);
 
       setSuccess(
         "Document uploaded successfully!"

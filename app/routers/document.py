@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import uuid
@@ -6,6 +7,8 @@ from datetime import datetime, date
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
+logger = logging.getLogger(__name__)
 
 from app.core.database import SessionLocal
 
@@ -20,7 +23,6 @@ from app.core.config import UPLOAD_DIR
 
 from app.routers.user import get_current_user
 
-from app.services.ocr_service import extract_text
 from app.services.llm_service import extract_document_data
 from app.services.document_expiry_service import get_document_status
 from app.services.document_reminder_service import get_expiring_documents
@@ -92,38 +94,61 @@ def create_document(
             detail="Unsupported file type. Only PDF, JPG, JPEG and PNG are allowed."
         )
 
-    unique_filename = f"{filename}_{uuid.uuid4().hex}{extension}"
+    logger.info(f"[DOC UPLOAD] Received request: member_id={member_id}, doc_type={document_type}, filename={file.filename}")
 
+    unique_filename = f"{filename}_{uuid.uuid4().hex}{extension}"
     file_path = os.path.join(upload_dir, unique_filename)
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    try:
+        file_bytes = file.file.read()
 
-    extracted_text = extract_text(file_path)
-    extracted_data = extract_document_data(extracted_text)
+        mime_types = {
+            ".pdf": "application/pdf",
+            ".jpg": "image/jpeg",
+            ".jpeg": "image/jpeg",
+            ".png": "image/png",
+        }
+        mime_type = file.content_type or mime_types.get(extension, "image/jpeg")
 
+        with open(file_path, "wb") as buffer:
+            buffer.write(file_bytes)
+        logger.info(f"[DOC UPLOAD] File saved to disk: path={file_path}, size={len(file_bytes)} bytes")
 
-    new_document = Document(
-        member_id=member.id,
-        document_type=document_type,
-        custom_document_name=custom_document_name,
-        file_path=file_path,
-        issue_date=issue_date,
-        expiry_date=expiry_date,
-        reminder_days_before=reminder_days_before,
-        extracted_data=extracted_data.extracted_fields
-    )
+        logger.info(f"[DOC UPLOAD] Calling Gemini extraction (mime_type={mime_type})...")
+        extracted_data = extract_document_data(file_bytes=file_bytes, mime_type=mime_type)
+        logger.info(f"[DOC UPLOAD] Gemini extraction completed: type='{extracted_data.document_type}', fields_count={len(extracted_data.extracted_fields)}")
 
-    db.add(new_document)
-    db.commit()
-    db.refresh(new_document)
+        new_document = Document(
+            member_id=member.id,
+            document_type=document_type,
+            custom_document_name=custom_document_name,
+            file_path=file_path,
+            issue_date=issue_date,
+            expiry_date=expiry_date,
+            reminder_days_before=reminder_days_before,
+            extracted_data=extracted_data.extracted_fields
+        )
 
-    #
-    return {
-        "message": "Document uploaded successfully",
-        "document_id": new_document.id,
-        "extracted_data": extracted_data.model_dump()
-    }
+        logger.info("[DOC UPLOAD] Committing document record to database...")
+        db.add(new_document)
+        db.commit()
+        db.refresh(new_document)
+        logger.info(f"[DOC UPLOAD] Database commit successful: document_id={new_document.id}")
+
+        return {
+            "message": "Document uploaded successfully",
+            "document_id": new_document.id,
+            "extracted_data": extracted_data.model_dump()
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception(f"[DOC UPLOAD] Unexpected error during document upload: {exc}")
+        db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Document upload processing failed: {str(exc)}"
+        )
 
 
 @router.get("/member/{member_id}")
