@@ -1,5 +1,7 @@
 # FamilyMate — AI-Assisted Family Management Platform
 
+🔗 **Live Demo:** https://familymate-1.onrender.com
+
 FamilyMate is a full-stack application that helps families centralize and manage **medicines, important documents, expiry-based reminders, notifications, and family data**, with an integrated **Google Gemini AI assistant, OCR-based data extraction, and agentic tool calling**.
 
 ---
@@ -194,9 +196,26 @@ Create a `.env` file in the project root:
 DATABASE_URL=your_postgresql_connection_string
 GEMINI_API_KEY=your_gemini_api_key
 SECRET_KEY=your_secret_key
+FRONTEND_URL=your_frontend_url
+
 ```
 
 Never commit `.env` or expose API keys and database credentials in source code.
+
+---
+
+## Deployment
+
+FamilyMate is deployed with the following setup:
+
+- **Frontend:** Deployed React + TypeScript application
+- **Backend:** FastAPI application deployed on Render
+- **Database:** PostgreSQL hosted on Neon
+- **AI:** Google Gemini API
+- **Backend Start Command:**
+
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
 
 ---
 
