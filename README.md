@@ -217,7 +217,6 @@ FamilyMate is deployed with the following setup:
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port $PORT
 
----
 
 ## Installation & Setup
 
