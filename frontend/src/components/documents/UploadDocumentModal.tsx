@@ -27,26 +27,6 @@ function UploadDocumentModal({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const getUploadError = (
-    data: any,
-    fallback: string
-  ) => {
-    if (typeof data?.detail === "string") {
-      return data.detail;
-    }
-
-    if (Array.isArray(data?.detail)) {
-      return data.detail
-        .map(
-          (item: any) =>
-            item?.msg || String(item)
-        )
-        .join(", ");
-    }
-
-    return fallback;
-  };
-
   const handleUpload = async () => {
     setError("");
     setSuccess("");
