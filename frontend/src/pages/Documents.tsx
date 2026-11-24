@@ -380,7 +380,7 @@ function Documents() {
     documents.length === 0
   ) {
     return (
-      <div className="min-h-screen bg-[#FFF9FA] p-10">
+      <div>
 
         <p className="text-sm font-semibold text-[#B86F83]">
           FAMILY RECORDS
@@ -409,7 +409,7 @@ function Documents() {
   // ====================================================
 
   return (
-    <div className="min-h-screen bg-[#FFF9FA] p-6 md:p-10">
+    <div>
 
       {/* HEADER */}
 
@@ -437,7 +437,7 @@ function Documents() {
             setError("");
             setShowUploadModal(true);
           }}
-          className="rounded-2xl bg-[#D98FA3] px-6 py-3.5 font-semibold text-white shadow-sm transition hover:bg-[#C97F94]"
+          className="w-full rounded-2xl bg-[#D98FA3] px-6 py-3.5 font-semibold text-white shadow-sm transition hover:bg-[#C97F94] md:w-auto"
         >
           + Upload Document
         </button>
@@ -484,7 +484,7 @@ function Documents() {
               onChange={
                 handleMemberChange
               }
-              className="rounded-2xl border border-[#E9D5DA] bg-white px-5 py-3 text-slate-700 outline-none focus:border-[#D98FA3] focus:ring-2 focus:ring-[#FCECEF]"
+              className="w-full rounded-2xl border border-[#E9D5DA] bg-white px-5 py-3 text-slate-700 outline-none focus:border-[#D98FA3] focus:ring-2 focus:ring-[#FCECEF] md:w-auto"
             >
               {members.map(
                 (member) => (
@@ -513,7 +513,7 @@ function Documents() {
           <div className="mt-8 rounded-3xl border border-[#F0E1E5] bg-white px-6 py-16 text-center">
 
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[#FCECEF] text-4xl">
-              ðŸ“„
+              📄
             </div>
 
             <h2 className="mt-5 text-xl font-bold text-slate-800">
@@ -567,9 +567,9 @@ function Documents() {
 
             {/* HEADER */}
 
-            <div className="flex items-start justify-between border-b border-[#F0E1E5] px-7 py-6">
+            <div className="flex items-start justify-between border-b border-[#F0E1E5] px-5 py-5 sm:px-7 sm:py-6">
 
-              <div>
+              <div className="min-w-0 pr-3">
 
                 <p className="text-sm font-semibold text-[#B86F83]">
                   DOCUMENT DETAILS
@@ -590,18 +590,18 @@ function Documents() {
                 }
                 className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF1F4] text-2xl text-[#B86F83] hover:bg-[#FCE3E9]"
               >
-                Ã—
+                ×
               </button>
 
             </div>
 
             {/* BODY */}
 
-            <div className="space-y-6 p-7">
+            <div className="space-y-6 p-5 sm:p-7">
 
               {/* STATUS */}
 
-              <div className="flex items-center justify-between rounded-2xl bg-[#FFF9FA] p-5">
+              <div className="flex flex-col gap-3 rounded-2xl bg-[#FFF9FA] p-5 sm:flex-row sm:items-center sm:justify-between">
 
                 <div>
 
@@ -725,7 +725,7 @@ function Documents() {
 
             {/* FOOTER */}
 
-            <div className="flex flex-col gap-3 border-t border-[#F0E1E5] p-7 sm:flex-row">
+            <div className="flex flex-col gap-3 border-t border-[#F0E1E5] p-5 sm:flex-row sm:p-7">
 
               <button
                 type="button"
@@ -787,7 +787,7 @@ function Documents() {
       {deletingDocumentId !== null && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 px-4">
 
-          <div className="w-full max-w-md rounded-3xl bg-white p-7 shadow-2xl">
+          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-5 shadow-2xl sm:p-7">
 
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-2xl">
               ðŸ—‘ï¸
@@ -801,7 +801,7 @@ function Documents() {
               This action cannot be undone. The document will be permanently removed.
             </p>
 
-            <div className="mt-7 flex gap-3">
+            <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row">
 
               <button
                 type="button"

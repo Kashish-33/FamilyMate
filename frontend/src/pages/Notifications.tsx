@@ -128,7 +128,7 @@ function Notifications() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FFF9FA] p-10">
+      <div>
         <p className="text-sm font-semibold text-[#B86F83]">
           FAMILY ALERTS
         </p>
@@ -149,7 +149,7 @@ function Notifications() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF9FA] p-6 md:p-10">
+    <div>
       <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-semibold tracking-wide text-[#B86F83]">
@@ -169,7 +169,7 @@ function Notifications() {
           type="button"
           disabled={actionLoading || unreadCount === 0}
           onClick={() => void handleMarkAllAsRead()}
-          className="rounded-2xl border border-[#E9D5DA] bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:bg-[#FFF9FA] disabled:opacity-50"
+          className="w-full rounded-2xl border border-[#E9D5DA] bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition hover:bg-[#FFF9FA] disabled:opacity-50 md:w-auto"
         >
           Mark all as read
         </button>

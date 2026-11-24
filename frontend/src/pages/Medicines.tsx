@@ -244,7 +244,7 @@ function Medicines() {
 
   if (loading && medicines.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FFF9FA] p-10">
+      <div>
         <p className="text-sm font-semibold text-[#B86F83]">
           FAMILY HEALTH
         </p>
@@ -271,7 +271,7 @@ function Medicines() {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#FFF9FA] p-6 md:p-10">
+    <div>
       <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-sm font-semibold tracking-wide text-[#B86F83]">
@@ -293,7 +293,7 @@ function Medicines() {
             setError("");
             setShowAddModal(true);
           }}
-          className="rounded-2xl bg-[#D98FA3] px-6 py-3.5 font-semibold text-white shadow-sm transition hover:bg-[#C97F94]"
+          className="w-full rounded-2xl bg-[#D98FA3] px-6 py-3.5 font-semibold text-white shadow-sm transition hover:bg-[#C97F94] md:w-auto"
         >
           + Add Medicine
         </button>
@@ -327,7 +327,7 @@ function Medicines() {
             <select
               value={selectedMemberId}
               onChange={handleMemberChange}
-              className="rounded-2xl border border-[#E9D5DA] bg-white px-5 py-3 text-slate-700 outline-none focus:border-[#D98FA3] focus:ring-2 focus:ring-[#FCECEF]"
+              className="w-full rounded-2xl border border-[#E9D5DA] bg-white px-5 py-3 text-slate-700 outline-none focus:border-[#D98FA3] focus:ring-2 focus:ring-[#FCECEF] md:w-auto"
             >
               {members.map((member) => (
                 <option
@@ -389,8 +389,8 @@ function Medicines() {
       {selectedMedicine && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
           <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
-            <div className="flex items-start justify-between border-b border-[#F0E1E5] px-7 py-6">
-              <div>
+            <div className="flex items-start justify-between border-b border-[#F0E1E5] px-5 py-5 sm:px-7 sm:py-6">
+              <div className="min-w-0 pr-3">
                 <p className="text-sm font-semibold text-[#B86F83]">
                   MEDICINE DETAILS
                 </p>
@@ -414,14 +414,14 @@ function Medicines() {
               </button>
             </div>
 
-            <div className="space-y-6 p-7">
+            <div className="space-y-6 p-5 sm:p-7">
               {detailLoading ? (
                 <div className="rounded-2xl bg-[#FFF9FA] p-5 text-slate-500">
                   Loading medicine details...
                 </div>
               ) : (
                 <>
-                  <div className="flex items-center justify-between rounded-2xl bg-[#FFF9FA] p-5">
+                  <div className="flex flex-col gap-3 rounded-2xl bg-[#FFF9FA] p-5 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                       <p className="text-sm text-slate-400">
                         Current Status
@@ -515,7 +515,7 @@ function Medicines() {
               )}
             </div>
 
-            <div className="flex flex-col gap-3 border-t border-[#F0E1E5] p-7 sm:flex-row">
+            <div className="flex flex-col gap-3 border-t border-[#F0E1E5] p-5 sm:flex-row sm:p-7">
               <button
                 type="button"
                 onClick={() => {
@@ -572,7 +572,7 @@ function Medicines() {
 
       {deletingMedicineId !== null && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/40 px-4">
-          <div className="w-full max-w-md rounded-3xl bg-white p-7 shadow-2xl">
+          <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-5 shadow-2xl sm:p-7">
             <h3 className="text-xl font-bold text-slate-800">
               Delete medicine?
             </h3>
@@ -581,7 +581,7 @@ function Medicines() {
               This action cannot be undone.
             </p>
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row">
               <button
                 type="button"
                 disabled={actionLoading}

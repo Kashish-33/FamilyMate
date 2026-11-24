@@ -52,7 +52,7 @@ function Chat() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-5rem)] min-h-[620px] flex-col">
+    <div className="flex h-[calc(100dvh-8.5rem)] min-h-[400px] flex-col lg:h-[calc(100dvh-5rem)]">
       <div>
         <p className="text-sm font-semibold tracking-wide text-[#B86F83]">FAMILY ASSISTANT</p>
         <h1 className="mt-1 text-3xl font-bold text-slate-800">Chat</h1>
@@ -78,7 +78,7 @@ function Chat() {
             <div className="mx-auto max-w-3xl space-y-5">
               {messages.map((message) => (
                 <div key={message.id} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[85%] whitespace-pre-wrap rounded-3xl px-5 py-3.5 text-sm leading-6 ${message.role === "user" ? "rounded-br-md bg-[#D98FA3] text-white" : "rounded-bl-md bg-[#FFF4F6] text-slate-700"}`}>
+                  <div className={`max-w-[85%] break-words whitespace-pre-wrap rounded-3xl px-4 py-3 text-sm leading-6 sm:px-5 sm:py-3.5 ${message.role === "user" ? "rounded-br-md bg-[#D98FA3] text-white" : "rounded-bl-md bg-[#FFF4F6] text-slate-700"}`}>
                     {message.content}
                   </div>
                 </div>
@@ -91,9 +91,9 @@ function Chat() {
 
         <div className="border-t border-[#F0E1E5] bg-[#FFF9FA] p-4 sm:p-5">
           {error && <div className="mx-auto mb-3 max-w-3xl rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">{error}</div>}
-          <div className="mx-auto flex max-w-3xl items-end gap-3">
-            <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={handleKeyDown} disabled={isSending} rows={1} placeholder="Ask FamilyMate..." className="max-h-32 min-h-12 flex-1 resize-y rounded-2xl border border-[#E8DDE1] bg-white px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-[#D98FA3] focus:ring-2 focus:ring-[#FCECEF] disabled:cursor-not-allowed disabled:bg-slate-50" />
-            <button type="button" onClick={() => void handleSend()} disabled={isSending || !input.trim()} className="rounded-2xl bg-[#D98FA3] px-5 py-3 font-semibold text-white transition hover:bg-[#C77890] disabled:cursor-not-allowed disabled:opacity-60">
+          <div className="mx-auto flex max-w-3xl flex-col items-stretch gap-3 sm:flex-row sm:items-end">
+            <textarea value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={handleKeyDown} disabled={isSending} rows={1} placeholder="Ask FamilyMate..." className="max-h-32 min-h-12 w-full flex-1 resize-y rounded-2xl border border-[#E8DDE1] bg-white px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:border-[#D98FA3] focus:ring-2 focus:ring-[#FCECEF] disabled:cursor-not-allowed disabled:bg-slate-50" />
+            <button type="button" onClick={() => void handleSend()} disabled={isSending || !input.trim()} className="w-full rounded-2xl bg-[#D98FA3] px-5 py-3 font-semibold text-white transition hover:bg-[#C77890] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
               {isSending ? "Sending..." : "Send"}
             </button>
           </div>

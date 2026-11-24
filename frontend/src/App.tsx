@@ -24,12 +24,12 @@ function Dashboard() {
         FAMILY DASHBOARD
       </p>
 
-      <h2 className="text-3xl font-bold text-slate-800 mt-1">
+      <h2 className="mt-1 text-2xl font-bold text-slate-800 sm:text-3xl">
         Nice to see you again!
       </h2>
 
-      <div className="mt-8 bg-white rounded-3xl border border-[#F0E1E5] p-8">
-        <h3 className="text-2xl font-semibold text-slate-800">
+      <div className="mt-6 rounded-3xl border border-[#F0E1E5] bg-white p-5 sm:mt-8 sm:p-8">
+        <h3 className="text-xl font-semibold text-slate-800 sm:text-2xl">
           Welcome to FamilyMate
         </h3>
 
@@ -43,6 +43,7 @@ function Dashboard() {
 
 function AppShell() {
   const [unreadCount, setUnreadCount] = useState(0);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     const loadUnreadCount = async () => {
@@ -108,9 +109,9 @@ function AppShell() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FFF9FA] flex">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-[#F0E1E5] p-6">
+    <div className="min-h-screen bg-[#FFF9FA] flex overflow-x-hidden">
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:block w-64 shrink-0 bg-white border-r border-[#F0E1E5] p-6">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-10">
           <div className="w-12 h-12 rounded-2xl bg-[#D98FA3] text-white flex items-center justify-center text-xl">
@@ -160,9 +161,106 @@ function AppShell() {
         </nav>
       </aside>
 
+      {/* Mobile and tablet drawer */}
+      {isDrawerOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          className="fixed inset-0 z-40 bg-slate-900/30 lg:hidden"
+          onClick={() => setIsDrawerOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 max-w-[85vw] shrink-0 bg-white border-r border-[#F0E1E5] p-6 shadow-xl transition-transform duration-200 lg:hidden ${
+          isDrawerOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        aria-hidden={!isDrawerOpen}
+      >
+        <button
+          type="button"
+          aria-label="Close navigation menu"
+          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-xl border border-[#F0E1E5] text-slate-600 hover:bg-[#FFF4F6]"
+          onClick={() => setIsDrawerOpen(false)}
+        >
+          <span aria-hidden="true" className="text-xl leading-none">
+            ✕
+          </span>
+        </button>
+
+        {/* Logo */}
+        <div className="flex items-center gap-3 mb-10 pr-10">
+          <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#D98FA3] text-white flex items-center justify-center text-xl">
+            ✦
+          </div>
+
+          <div className="min-w-0">
+            <h1 className="font-bold text-slate-800">
+              FamilyMate
+            </h1>
+
+            <p className="text-xs text-slate-400">
+              Your family assistant
+            </p>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="space-y-2">
+          {navItems.map((item) => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={() => setIsDrawerOpen(false)}
+              className={({ isActive }) =>
+                `block w-full px-4 py-3 rounded-xl transition ${isActive
+                  ? "bg-[#FCECEF] text-[#A85F75]"
+                  : "text-slate-600 hover:bg-[#FFF4F6]"
+                }`
+              }
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span>
+                  {item.icon} {item.name}
+                </span>
+
+                {item.showUnreadCount &&
+                  unreadCount > 0 && (
+                    <span className="min-w-6 rounded-full bg-[#D98FA3] px-2 py-0.5 text-center text-xs font-semibold text-white">
+                      {unreadCount > 99
+                        ? "99+"
+                        : unreadCount}
+                    </span>
+                  )}
+              </div>
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
+
       {/* Main content */}
-      <main className="flex-1 p-10">
-        <Outlet />
+      <main className="min-w-0 flex-1">
+        <header className="sticky top-0 z-30 flex h-16 items-center border-b border-[#F0E1E5] bg-white px-4 lg:hidden">
+          <button
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded={isDrawerOpen}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#F0E1E5] text-slate-600 hover:bg-[#FFF4F6]"
+            onClick={() => setIsDrawerOpen(true)}
+          >
+            <span aria-hidden="true" className="text-xl leading-none">
+              ☰
+            </span>
+          </button>
+
+          <div className="ml-3 min-w-0">
+            <p className="truncate font-bold text-slate-800">FamilyMate</p>
+          </div>
+        </header>
+
+        <div className="min-w-0 p-4 sm:p-6 lg:p-10">
+          <Outlet />
+        </div>
       </main>
     </div>
   );

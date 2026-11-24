@@ -19,9 +19,9 @@ function DocumentCard({
     <button
       type="button"
       onClick={onClick}
-      className="group rounded-3xl border border-[#F0E1E5] bg-white p-6 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      className="group min-w-0 w-full rounded-3xl border border-[#F0E1E5] bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-6"
     >
-      <div className="flex items-start gap-4">
+      <div className="flex min-w-0 flex-wrap items-start gap-3">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#FCECEF] text-2xl">
           📄
         </div>

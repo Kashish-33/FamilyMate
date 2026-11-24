@@ -50,13 +50,13 @@ function FamilyMemberCard({
   return (
     <>
       <div className="rounded-3xl border border-[#F0E1E5] bg-white p-6 shadow-sm transition hover:shadow-md">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FCECEF] text-2xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#FCECEF] text-2xl">
               👤
             </div>
 
-            <div>
+            <div className="min-w-0">
               <h2 className="text-lg font-semibold text-slate-800">
                 {member.name}
               </h2>
@@ -71,7 +71,7 @@ function FamilyMemberCard({
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               type="button"
               onClick={() => setShowEditModal(true)}

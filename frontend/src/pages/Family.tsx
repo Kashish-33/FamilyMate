@@ -89,7 +89,7 @@ function Family() {
 
   if (loading) {
     return (
-      <div className="p-8 text-slate-500">
+      <div className="text-slate-500">
         Loading family members...
       </div>
     );
@@ -97,18 +97,15 @@ function Family() {
 
   if (error) {
     return (
-      <div className="p-8">
-        <div className="rounded-2xl border border-red-100 bg-red-50 p-4 text-red-600">
-          {error}
-        </div>
+      <div className="rounded-2xl border border-red-100 bg-red-50 p-4 text-red-600">
+        {error}
       </div>
     );
   }
 
   if (!hasFamily) {
     return (
-      <div className="p-8">
-        <div className="rounded-3xl border border-[#F0E1E5] bg-white p-8">
+      <div className="rounded-3xl border border-[#F0E1E5] bg-white p-5 sm:p-8">
           <p className="text-sm font-medium text-[#B86F83]">
             FAMILY SETUP
           </p>
@@ -150,23 +147,22 @@ function Family() {
             <button
               type="submit"
               disabled={setupLoading}
-              className="mt-4 rounded-xl bg-[#D98FA3] px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-[#C97F94] disabled:opacity-60"
+              className="mt-4 w-full rounded-xl bg-[#D98FA3] px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-[#C97F94] disabled:opacity-60 sm:w-auto"
             >
               {setupLoading
                 ? "Creating family..."
                 : "Create Family"}
             </button>
           </form>
-        </div>
       </div>
     );
   }
 
   return (
-    <div className="p-8">
+    <div>
       {/* Header */}
-      <div className="mb-8 flex items-start justify-between gap-4">
-        <div>
+      <div className="mb-8 flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
           <p className="text-sm font-medium text-[#B86F83]">
             YOUR FAMILY
           </p>
@@ -183,7 +179,7 @@ function Family() {
         <button
           type="button"
           onClick={() => setShowAddModal(true)}
-          className="rounded-xl bg-[#D98FA3] px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-[#C97F94]"
+          className="w-full rounded-xl bg-[#D98FA3] px-5 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-[#C97F94] sm:w-auto"
         >
           + Add Family Member
         </button>

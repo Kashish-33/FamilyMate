@@ -99,13 +99,13 @@ function EditDocumentModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 px-4">
-      <div className="w-full max-w-xl rounded-3xl bg-white shadow-2xl">
+      <div className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
 
         {/* HEADER */}
 
-        <div className="flex items-start justify-between border-b border-[#F0E1E5] px-7 py-6">
+        <div className="flex items-start justify-between border-b border-[#F0E1E5] px-5 py-5 sm:px-7 sm:py-6">
 
-          <div>
+          <div className="min-w-0 pr-3">
             <p className="text-sm font-semibold text-[#B86F83]">
               EDIT DOCUMENT
             </p>
@@ -128,7 +128,7 @@ function EditDocumentModal({
 
         {/* BODY */}
 
-        <div className="space-y-5 p-7">
+        <div className="space-y-5 p-5 sm:p-7">
 
           {error && (
             <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-600">
@@ -172,7 +172,7 @@ function EditDocumentModal({
 
           {/* DATES */}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -249,7 +249,7 @@ function EditDocumentModal({
 
         {/* FOOTER */}
 
-        <div className="flex gap-3 border-t border-[#F0E1E5] p-7">
+        <div className="flex flex-col-reverse gap-3 border-t border-[#F0E1E5] p-5 sm:flex-row sm:p-7">
 
           <button
             type="button"

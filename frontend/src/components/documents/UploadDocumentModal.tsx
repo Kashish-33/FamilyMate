@@ -114,8 +114,8 @@ function UploadDocumentModal({
       <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white shadow-2xl">
 
         {/* HEADER */}
-        <div className="flex items-start justify-between border-b border-[#F0E1E5] px-7 py-6">
-          <div>
+        <div className="flex items-start justify-between border-b border-[#F0E1E5] px-5 py-5 sm:px-7 sm:py-6">
+          <div className="min-w-0 pr-3">
             <p className="text-sm font-semibold text-[#B86F83]">
               FAMILY RECORDS
             </p>
@@ -135,7 +135,7 @@ function UploadDocumentModal({
         </div>
 
         {/* BODY */}
-        <div className="space-y-5 p-7">
+        <div className="space-y-5 p-5 sm:p-7">
 
           {error && (
             <div className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-red-600">
@@ -211,7 +211,7 @@ function UploadDocumentModal({
           </div>
 
           {/* DATES */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
             <div>
               <label className="mb-2 block text-sm font-semibold text-slate-700">
@@ -304,7 +304,7 @@ function UploadDocumentModal({
         </div>
 
         {/* FOOTER */}
-        <div className="flex gap-3 border-t border-[#F0E1E5] p-7">
+        <div className="flex flex-col-reverse gap-3 border-t border-[#F0E1E5] p-5 sm:flex-row sm:p-7">
 
           {/* CANCEL MUST REMAIN AVAILABLE DURING UPLOAD */}
           <button

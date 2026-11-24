@@ -51,7 +51,7 @@ function AddFamilyMemberModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-lg rounded-3xl bg-white p-8 shadow-xl">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl bg-white p-5 shadow-xl sm:p-8">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-slate-800">
             Add Family Member
@@ -99,7 +99,7 @@ function AddFamilyMemberModal({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-sm font-medium text-slate-700">
                 Age
@@ -149,7 +149,7 @@ function AddFamilyMemberModal({
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex flex-col-reverse gap-3 pt-4 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={onClose}
